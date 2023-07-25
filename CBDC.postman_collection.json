@@ -1,0 +1,173 @@
+{
+	"info": {
+		"_postman_id": "77ad8321-8906-403e-80f5-73d6e00b5ce8",
+		"name": "CBDC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Init Ledger",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/init",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"init"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Denominations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/getDenominations",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"getDenominations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Notes",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"denominationId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/getNotes",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"getNotes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Note",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"denominationId\": 1,\r\n    \"noteId\": \"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/getNote",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"getNote"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Notes",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"denominationId\": 1,\r\n    \"denominationValue\": 10,\r\n    \"noOfNotes\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/createNotes",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"createNotes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mint Notes",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"denominationId\": 1,\r\n    \"noOfNotes\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/mintNotes",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"mintNotes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sync Transfer Ownership",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"denominationId\": 1,\r\n    \"noteId\": \"unique\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/syncTransferOwnership",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"syncTransferOwnership"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
