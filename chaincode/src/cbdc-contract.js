@@ -141,7 +141,15 @@ class CbdcContract extends BaseContract {
     const prefix = this.#prefixNotes + denominationId;
     const compositeKey = this._createCompositeKey(ctx.stub, prefix, noteId);
     const note = await this._getData(ctx.stub, compositeKey);
-    return note;
+    const history = await this._getHistoryForKey(ctx.stub, compositeKey);
+
+    console.log(note, history);
+
+    const output = {
+      data: JSON.parse(note),
+      history: JSON.parse(history),
+    };
+    return JSON.stringify(output);
   }
 
   async mintNotes(ctx, denominationId, noOfNotes, userId) {

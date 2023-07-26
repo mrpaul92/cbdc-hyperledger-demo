@@ -60,6 +60,30 @@ class BaseContract extends Contract {
     await stub.putState(compositeKey, buffer);
   }
 
+  async _getHistoryForKey(stub, compositeKey) {
+    const exists = await this._checkExists(stub, compositeKey);
+    if (!exists) {
+      throw new Error(`The data in key: ${compositeKey} does not exist`);
+    }
+
+    const historyIterator = await stub.getHistoryForKey(compositeKey);
+    const history = [];
+    while (true) {
+      const historyRecord = await historyIterator.next();
+
+      if (historyRecord.done) {
+        await historyIterator.close();
+        return JSON.stringify(history);
+      }
+
+      const txId = historyRecord.value.txId;
+      const timestamp = historyRecord.value.timestamp;
+      const value = JSON.parse(historyRecord.value.value.toString("utf8"));
+
+      history.push({ txId, timestamp, value });
+    }
+  }
+
   _generateUniqueString(length = 16) {
     return crypto.randomBytes(length).toString("hex");
   }
