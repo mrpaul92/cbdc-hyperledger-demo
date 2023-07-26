@@ -78,7 +78,8 @@ const mintNotes = async (req, res) => {
 };
 
 const syncTransferOwnership = async (req, res) => {
-  const { userId } = req.user;
+  // const { userId } = req.user;
+  const userId = 9700328328;
   const { denominationId, noteId } = req.body;
   const connection = new Connection("org1");
   const contract = connection.getContract();

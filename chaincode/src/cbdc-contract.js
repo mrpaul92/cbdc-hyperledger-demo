@@ -1,5 +1,4 @@
 const BaseContract = require("./base-contract");
-const { nanoid } = require("nanoid");
 
 class CbdcContract extends BaseContract {
   #initialized;
@@ -8,8 +7,8 @@ class CbdcContract extends BaseContract {
   #initialOwner;
   constructor() {
     super("cbdc");
-    this.#prefixDenominations = "denominations_";
-    this.#prefixNotes = "notes_";
+    this.#prefixDenominations = "denominations";
+    this.#prefixNotes = "notes";
     this.#initialized = false;
     this.#initialOwner = "RBI";
   }
@@ -88,15 +87,22 @@ class CbdcContract extends BaseContract {
     const prefix = this.#prefixNotes + denominationId;
 
     for (let i = 0; i < Number(noOfNotes); i++) {
-      const uniqueId = nanoid().replace(/-/g, "");
-      const compositeKey = this._createCompositeKey(ctx.stub, prefix, uniqueId);
+      const tokenId = this._getTokenId();
+      const serialNo = this._generateUniqueString();
       const note = {
-        id: uniqueId,
+        id: Number(tokenId),
+        // serialNo,
         value: Number(denominationValue),
         denominationId: Number(denominationId),
         isMinted: false,
         owner: this.#initialOwner,
       };
+
+      const compositeKey = this._createCompositeKey(
+        ctx.stub,
+        prefix,
+        note.id.toString()
+      );
       await this._addData(ctx.stub, compositeKey, note);
     }
   }
@@ -142,14 +148,16 @@ class CbdcContract extends BaseContract {
     const notesStringify = await this.getNotes(ctx, denominationId);
     const notesJson = JSON.parse(notesStringify);
     if (notesJson.available >= Number(noOfNotes)) {
-      const nonMinted = notesJson.filter((item) => item.isMinted === false);
+      const nonMinted = notesJson.data.filter(
+        (item) => item.isMinted === false
+      );
       const picked = nonMinted.slice(0, noOfNotes);
       const prefix = this.#prefixNotes + denominationId;
       for (let item of picked) {
         const compositeKey = this._createCompositeKey(
           ctx.stub,
           prefix,
-          item.id
+          item.id.toString()
         );
         item.isMinted = true;
         item.owner = userId;

@@ -1,10 +1,13 @@
 const stringify = require("json-stringify-deterministic");
 const sortKeysRecursive = require("sort-keys-recursive");
 const { Contract } = require("fabric-contract-api");
+const crypto = require("crypto");
 
 class BaseContract extends Contract {
+  #counter;
   constructor(namespace) {
     super(namespace);
+    this.#counter = 1;
   }
 
   _require(value, name) {
@@ -55,6 +58,14 @@ class BaseContract extends Contract {
     }
     const buffer = Buffer.from(stringify(sortKeysRecursive(newData)));
     await stub.putState(compositeKey, buffer);
+  }
+
+  _generateUniqueString(length = 16) {
+    return crypto.randomBytes(length).toString("hex");
+  }
+
+  _getTokenId() {
+    return (this.#counter++).toString();
   }
 }
 
