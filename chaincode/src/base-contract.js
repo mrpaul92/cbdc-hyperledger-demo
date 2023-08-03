@@ -4,9 +4,11 @@ const { Contract } = require("fabric-contract-api");
 const crypto = require("crypto");
 
 class BaseContract extends Contract {
+  #token;
   #counter;
   constructor(namespace) {
     super(namespace);
+    this.#token = 1;
     this.#counter = 1;
   }
 
@@ -84,12 +86,23 @@ class BaseContract extends Contract {
     }
   }
 
-  _generateUniqueString(length = 16) {
-    return crypto.randomBytes(length).toString("hex");
+  _generateUniqueString(stub) {
+    const txId = stub.getTxID();
+    const timestamp = stub.getTxTimestamp();
+    const timestampAsDate = new Date(
+      timestamp.seconds * 1000 + timestamp.nanos / 1000000
+    );
+    const uniqueString =
+      txId +
+      timestampAsDate.getTime().toString() +
+      (this.#counter++).toString();
+    const hash = crypto.createHash("sha256");
+    hash.update(uniqueString);
+    return hash.digest("hex");
   }
 
   _getTokenId() {
-    return (this.#counter++).toString();
+    return (this.#token++).toString();
   }
 }
 

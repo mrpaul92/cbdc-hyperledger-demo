@@ -88,10 +88,10 @@ class CbdcContract extends BaseContract {
 
     for (let i = 0; i < Number(noOfNotes); i++) {
       const tokenId = this._getTokenId();
-      const serialNo = this._generateUniqueString();
+      const serialNo = this._generateUniqueString(ctx.stub);
       const note = {
         id: Number(tokenId),
-        // serialNo,
+        serialNo,
         value: Number(denominationValue),
         denominationId: Number(denominationId),
         isMinted: false,
